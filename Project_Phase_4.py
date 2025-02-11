@@ -388,7 +388,7 @@ class Inventory:
     # Manual
     def search_product_by_category_name_memo(self, name: str):
         # Setup a unique key with category name
-        key = f"product-category-{name}"
+        key = name
         if key in self.memoized_search:
             return self.memoized_search[key]
         result = [
@@ -457,6 +457,110 @@ print("100000 new products are added")
 print(f"Execution time - {end-start} seconds")
 print("Current inventory products size", len(inventory.products))
 print("******************************")
+
+# Testing to check basic functionalities such as add, update, search
+print("\n******************************")
+print("Basic functionality testing")
+print("******************************")
+
+# Beginning category class functionality testing
+print("\nCategory class functionality testing")
+print("Find Category by name functionality testing")
+print("Find Category by name - Category-10000")
+print(
+    f"Regular Search No Cache - {inventory.search_category_by_name_no_cache("Category-10000")}"
+)
+print(
+    f"Regular Search LRU Cache - {inventory.search_category_by_name("Category-10000")}"
+)
+print(
+    f"Regular Search Custom Memoized Cache - {inventory.search_category_by_name_memo("Category-10000")}"
+)
+
+print("\nUpdate category - Category-10000 to False status")
+inventory.update_category(10000, None, False)
+print(
+    f"Regular Search No Cache after update - {inventory.search_category_by_name_no_cache("Category-10000")}"
+)
+
+print("\nAdding new category - New Category")
+inventory.add_new_category(50000, "New Category", True)
+print(
+    f"Regular Search New Category No Cache Before Deletion - {inventory.search_category_by_name_no_cache("New Category")}"
+)
+print("Deleting new category - New Category")
+inventory.delete_category(50000)
+print(
+    f"Regular Search New Category No Cache After Deletion - {inventory.search_category_by_name_no_cache("New Category")}"
+)
+
+print("\n******************************")
+print("Product Class functionality testing")
+print("******************************")
+print("\nFind Products by name functionality testing")
+print("Find Products by name - Product-10000")
+print(
+    f"Regular Search No Cache - {inventory.search_product_by_name_no_cache("Product-10000")}"
+)
+print(f"Regular Search LRU Cache - {inventory.search_product_by_name("Product-10000")}")
+print(
+    f"Regular Search Custom Memoized Cache - {inventory.search_product_by_name_memo("Product-10000")}"
+)
+
+print("\nFind Products by price range functionality testing")
+print("Find Products by price range - 5 - 5.1")
+print(
+    f"Regular Search No Cache - {inventory.search_product_by_price_range_no_cache(5,5.1)}"
+)
+print(f"\nRegular Search LRU Cache - {inventory.search_product_by_price_range(5,5.1)}")
+print(
+    f"\nRegular Search Custom Memoized Cache - {inventory.search_product_by_price_range_memo(5,5.1)}"
+)
+
+print("\nFind Products by category id")
+print(
+    f"Regular Search No Cache - {inventory.search_product_by_category_id_no_cache(10000)}"
+)
+print(f"\nRegular Search LRU Cache - {inventory.search_product_by_category_id(10000)}")
+print(
+    f"\nRegular Search Custom Memoized Cache - {inventory.search_product_by_category_id_memo(10000)}"
+)
+
+print("\nFind Products by category name")
+print(
+    f"Regular Search No Cache - {inventory.search_product_by_category_name_no_cache("Category-10000")}"
+)
+print(
+    f"\nRegular Search LRU Cache - {inventory.search_product_by_category_name("Category-10000")}"
+)
+print(
+    f"\nRegular Search Custom Memoized Cache - {inventory.search_product_by_category_name_memo("Category-10000")}"
+)
+
+print(
+    "\nTest case to add a new product, update it, get its price history, and delete it"
+)
+inventory.add_product(9999999, "New Product", 500, "", 1000, 50)
+print(
+    "After adding new product - New Product -",
+    inventory.search_product_by_name("New Product"),
+)
+inventory.update_product(9999999, None, 450, "Description")
+print(
+    "After updating new product information - New Product -",
+    inventory.search_product_by_name("New Product"),
+)
+print("Price history of new product", inventory.get_product_price_history(9999999))
+inventory.increase_product_quantity(9999999, 50)
+print(
+    "After increasing product quantity by 50 - New Product quantity must be 100 -",
+    inventory.search_product_by_name("New Product"),
+)
+inventory.decrease_product_quantity(9999999, 40)
+print(
+    "After decreasing product quantity by 40 - New Product quantity must be 60 -",
+    inventory.search_product_by_name("New Product"),
+)
 
 
 # Beginning stress testing
