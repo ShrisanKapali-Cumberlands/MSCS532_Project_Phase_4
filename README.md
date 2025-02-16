@@ -54,3 +54,7 @@ Price history can be printed. If no price history is there, it prints empty.
 ## Stress testing
 
 100 test were conducted for each search functionality. For each test run, a random category and product name, random price was generated. The results of the search for no-cache, LRU cache, and custom memoized cache was graphed.
+
+## Remaining files on GitHub
+
+The final combined pdf document "MSCS_532_Project_Phase_4.pdf" and powerpoint presentation used in the demo "Presentation.pptx" have been uploaded. The screenshot of graphs for each search results have also been uploaded.
